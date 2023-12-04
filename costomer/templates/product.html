@@ -1,0 +1,101 @@
+{% extends 'navbar.html' %}
+
+{% block nav%}
+<h1 class="bg-success text-light text-center text-uppercase p-3">product details</h1>
+
+{% if messages %}
+        {% for i in messages %}
+            {% if i.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{i}}</strong>
+                </div>
+            {%endif%}
+            {% if i.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{i}}</strong>
+                </div>
+            {%endif%}
+
+            
+        {% endfor%}
+        {%endif%} 
+
+<div class="row mt-5 container">
+    <div class="col p-5">
+        <img src="{{data.image.url}}"  alt="image not found">
+    </div>
+    <div class="col mt-5">
+        <ul class="list-group">
+            <li class="list-group-item">Name: <b>{{data.name}}</b></li>
+            <li class="list-group-item">Type: <b>{{data.type}}</b></li>
+            <li class="list-group-item">Description: <b>{{data.description}}</b></li>
+            <li class="list-group-item">Price: <b>{{data.price}}</b></li>
+            <li class="list-group-item">
+                <a href="{% url 'acart' data.id %}" onclick="return confirm('add to cart?')" class="btn btn-info">Add to Cart</a>
+            </li>
+            <li class="list-group-item">
+                <p>
+                    
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReview" aria-expanded="false" aria-controls="collapseExample">
+                      Add your review
+                    </button>
+                  </p>
+                  <div class="collapse" id="collapseReview">
+                    <div class="card card-body">
+                      <form action="{% url 'areview' data.id %}" method="post" class="text-center bg-light rounded">
+                        {%csrf_token%}
+                        <table class="table table-borderless">
+                            {{form.as_table}}
+                        </table>
+                        <button class="btn btn-success">submit</button>
+    
+                    
+    
+                    </form>
+                    </div>
+                  </div>
+                <!-- <form action="{% url 'areview' data.id %}" method="post" class="text-center bg-light rounded">
+                    {%csrf_token%}
+                    <table class="table table-borderless">
+                        {{form.as_table}}
+                    </table>
+                    <button class="btn btn-success">submit</button>
+
+                
+
+                </form> -->
+                
+
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div id="collapse " class="text-center">
+    <p>
+        
+        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          View Reviews
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          <!-- Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger. -->
+        <div>
+            {% for i in review %}
+                <h3 class="text-light bg-dark">Reviews</h3>
+                <div class="border-1 border border-dark mb-1">
+                    <h5>{{i.review}}</h5>
+                    <p class="text-end">User: {{i.user.first_name}} {{i.user.last_name}}</p>
+                    <p class="text-end">Date: {{i.date}}</p>
+                </div>
+            {%endfor%}
+        </div>
+        </div>
+      </div>
+</div>
+
+
+{% endblock nav%}

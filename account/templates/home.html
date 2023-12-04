@@ -1,0 +1,52 @@
+{% extends 'navbar.html' %}
+
+
+{% block nav%}
+
+    <!-- <h3 class="bg-success text-light text-center text-uppercase p-3 fw-bold">products</h3> -->
+    <h3 class="bg-secondary text-light text-center text-uppercase p-3 fw-bold">products</h3>
+    {% if messages %}
+        {% for i in messages %}
+            {% if i.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{i}}</strong>
+                </div>
+            {%endif%}
+            {% if i.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{i}}</strong>
+                </div>
+            {%endif%}
+
+            
+        {% endfor%}
+    {%endif%}    
+    <div class="text-secondary pt-2 pb-3 d-flex justify-content-end">
+      <h5 style="display: inline;">Welcome to Egadgets : </h5>
+      <h5 class="text-warning" style="display: inline;">{{request.user.first_name}} {{request.user.last_name}}</h5>
+
+    </div>
+    <div class="row">
+      {% for i in data %}
+      <div class="card ms-5 mb-3" style="width: 18rem;">
+        <img src="{{i.image.url}}" height="300px" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{i.name}}</h5>
+          <p class="card-text">{{i.description}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{i.type}}</li>
+         
+        </ul>
+        <div class="card-body text-center">
+          <a href="{% url 'prodet' i.id %}" class="card-link btn btn-warning">View more</a>
+          <!-- <a href="#" class="card-link">Another link</a> -->
+        </div>
+      </div>
+      {%endfor%}
+
+    </div>
+
+{% endblock nav%}

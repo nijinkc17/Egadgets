@@ -1,0 +1,56 @@
+{% extends 'navbar.html' %}
+
+{% block nav%}
+<h1 class="bg-success text-light text-center text-uppercase p-3">My Orders</h1>
+    {% if messages %}
+        {% for i in messages %}
+            {% if i.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{i}}</strong>
+                </div>
+            {%endif%}
+            {% if i.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>{{i}}</strong>
+                </div>
+            {%endif%}
+
+            
+        {% endfor%}
+        {%endif%}
+
+
+    {% for i in data %}
+        <div class="row mx-5 bg-dark rounded mb-5">
+            <div class="col mx-5">
+                <img src="{{i.cart.product.image.url}}" style="height: 500px;" class="w-100 my-3" alt="">
+            </div>
+            <div class="col my-auto mx-5">
+                <ul class="list-group mt-3">
+                    <li class="list-group-item bg-secondary">{{i.cart.product.name}}</li>
+                    <li class="list-group-item bg-secondary">{{i.cart.product.price}}</li>
+                    <li class="list-group-item bg-secondary">{{i.date}}</li>
+                    <li class="list-group-item ">
+                        {% if i.status == 'Order Placed' or i.status == 'Shipped' %}
+                            <p class="text-info ms-3">{{i.status}}</p>
+                            <a href="{% url 'corder' i.id %}" onclick="return confirm('Are you sure?')" class="btn btn-danger">Cancel Order</a>
+                            <!-- <a href="{% url 'corder' i.id %}" onclick="return confirm('Are You Sure?')" class="btn btn-danger ms-3"> Cancel Order</a> -->
+                        {% else %}
+                            {% if i.status == 'Cancelled' %}
+                                <p class="text-danger ms-3" >{{i.status}}</p>
+                            {% else %}
+                                <p class="text-success ms-3" >{{i.status}}</p>
+                            {%endif%}
+                        {%endif%}
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock nav%}
